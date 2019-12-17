@@ -33,6 +33,25 @@ public class MUI extends javax.swing.JFrame {
     private boolean dflag;
     private String op;
     private String str;
+    private int row;
+    
+    //START STATE
+    State state;
+        
+    State initialState;
+    State categoryState;
+    State entryState;
+    
+    void setState(State state){
+        this.state = state;
+    }
+    
+     int getTableRow(){
+        row = jXTable1.getSelectedRow();
+        return row;
+    }
+    //END STATE
+    
     
     //START SINGLETON
     private static MUI single_instance = null;
@@ -178,6 +197,13 @@ public class MUI extends javax.swing.JFrame {
     }
     
     public MUI() {
+        //START STATE
+        initialState = new Initial(this);
+        categoryState = new Category(this);
+        entryState = new Entry(this);
+        
+        state = initialState;
+        //END STATE
         initComponents();
         String[] columnNames = {"S.No", "Name", "Mobile"," Email"};
         DefaultTableModel model = new DefaultTableModel(null, columnNames);
@@ -601,7 +627,7 @@ public class MUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
     
    // START REFACTOR 
-    private boolean selectCategory(int index) {	
+        private boolean selectCategory(int index) {	
     	boolean b = true;
         if(index<0){
             JOptionPane.showMessageDialog(mg, "Select a category!");
@@ -622,41 +648,53 @@ public class MUI extends javax.swing.JFrame {
     }
     
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        int index = jList1.getSelectedIndex();
-        if(selectCategory(index) == false) {
-        	return;
-        }
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
+    if(getTableRow() >= 0){
+    	setState(entryState);
+    }
+
+    state.jButton1ActionPerformed(evt);
+    //STATE END
+
+
+        //     int index = jList1.getSelectedIndex();
+        // if(selectCategory(index) == false) {
+        // 	return;
+        // }
         
-        jPanel1.setVisible(false);
-        jPanel3.setVisible(true);
-        x = index;
-        flag = true;
-        dflag = false;
-        setDescription();
-    }//GEN-LAST:event_jButton1ActionPerformed
+        // jPanel1.setVisible(false);
+        // jPanel3.setVisible(true);
+        // x = index;
+        // flag = true;
+        // dflag = false;
+        // setDescription();
+	}//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        int index = jList1.getSelectedIndex();
-        if(selectCategory(index) == false) {
-        	return;
+       	if(getTableRow() >= 0){
+            setState(entryState);
         }
+        state.jButton2ActionPerformed(evt);
 
-        int tindex = jXTable1.getSelectedRow();
-        if(selectEntry(tindex) == false) {
-        	return;
-        }
+        //         int index = jList1.getSelectedIndex();
+        // if(selectCategory(index) == false) {
+        // 	return;
+        // }
 
-        int n = JOptionPane.showConfirmDialog(
-            mg,
-            "Are you sure you want to delete this?",
-            "Confirm",
-            JOptionPane.YES_NO_OPTION);
-        if(n==0){
-            a.get(index).remove(tindex);
-            JOptionPane.showMessageDialog(mg, "Successfully Deleted");
-            mg.setUpTableData();
-        }
+        // int tindex = jXTable1.getSelectedRow();
+        // if(selectEntry(tindex) == false) {
+        // 	return;
+        // }
+
+        // int n = JOptionPane.showConfirmDialog(
+        //     mg,
+        //     "Are you sure you want to delete this?",
+        //     "Confirm",
+        //     JOptionPane.YES_NO_OPTION);
+        // if(n==0){
+        //     a.get(index).remove(tindex);
+        //     JOptionPane.showMessageDialog(mg, "Successfully Deleted");
+        //     mg.setUpTableData();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -683,42 +721,53 @@ public class MUI extends javax.swing.JFrame {
 
     private void jList1ValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jList1ValueChanged
         setUpTableData();
+        setState(categoryState);
     }//GEN-LAST:event_jList1ValueChanged
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        int index = jList1.getSelectedIndex();
-        if(selectCategory(index)==false) {
-        	return;
+      	//STATE START
+      	if(getTableRow() >= 0){
+            setState(entryState);
         }
-        int tindex = jXTable1.getSelectedRow();
-        if(selectEntry(tindex)==false) {
-        	return;
-        }
-        num = tindex;
-        flag = false;
-        dflag = false;
-        x = index;
-        setDescription();
-        jPanel1.setVisible(false);
-        jPanel3.setVisible(true);
+
+        state.jButton5ActionPerformed(evt);
+        //STATE END
+
+        // int tindex = jXTable1.getSelectedRow();
+        // if(selectEntry(tindex)==false) {
+        // 	return;
+        // }
+        // num = tindex;
+        // flag = false;
+        // dflag = false;
+        // x = index;
+        // setDescription();
+        // jPanel1.setVisible(false);
+        // jPanel3.setVisible(true);
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        int index = jList1.getSelectedIndex();
-        if(selectCategory(index)==false) {
-        	return;
+    	        if(getTableRow() >= 0){
+            setState(entryState);
         }
-        int tindex = jXTable1.getSelectedRow();
-        if(selectEntry(tindex)==false) {
-        	return;
-        }
-        num = tindex;
-        flag = false;
-        x = index;
-        jPanel1.setVisible(false);
-        jPanel3.setVisible(true);
-        dflag = true;
-        setDescription();
+
+    state.jButton6ActionPerformed(evt);
+
+        // int index = jList1.getSelectedIndex();
+        // if(selectCategory(index)==false) {
+        // 	return;
+        // }
+        // int tindex = jXTable1.getSelectedRow();
+        // if(selectEntry(tindex)==false) {
+        // 	return;
+        // }
+        // num = tindex;
+        // flag = false;
+        // x = index;
+        // jPanel1.setVisible(false);
+        // jPanel3.setVisible(true);
+        // dflag = true;
+        // setDescription();
     }//GEN-LAST:event_jButton6ActionPerformed
 
     //END REFACTOR
@@ -894,6 +943,61 @@ public class MUI extends javax.swing.JFrame {
         else
             return true;
     }
+    
+    //START STATE
+    public void addContact(){
+        int index = jList1.getSelectedIndex();
+        jPanel1.setVisible(false);
+        jPanel3.setVisible(true);
+        x = index;
+        flag = true;
+        dflag = false;
+        setDescription();
+    }
+    
+    public void deleteContact(){
+        int index = jList1.getSelectedIndex();
+        int tindex = getTableRow();
+        
+        int n = JOptionPane.showConfirmDialog(
+            mg,
+            "Are you sure you want to delete this?",
+            "Confirm",
+            JOptionPane.YES_NO_OPTION);
+        if(n==0){
+            a.get(index).remove(tindex);
+            JOptionPane.showMessageDialog(mg, "Successfully Deleted");
+            mg.setUpTableData();
+        }
+    }
+    
+    public void editContact(){
+        int index = jList1.getSelectedIndex();
+        int tindex = getTableRow();
+        
+        num = tindex;
+        flag = false;
+        dflag = false;
+        x = index;
+        setDescription();
+        jPanel1.setVisible(false);
+        jPanel3.setVisible(true);
+    }
+    
+    public void viewFullDetail(){
+        int index = jList1.getSelectedIndex();
+        int tindex = getTableRow();
+        
+        num = tindex;
+        flag = false;
+        x = index;
+        jPanel1.setVisible(false);
+        jPanel3.setVisible(true);
+        dflag = true;
+        setDescription();
+    }
+    
+    //END STATE
         
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
         dflag = true;
